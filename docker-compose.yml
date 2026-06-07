@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  application:
+    build: ./docker
+    image: leafphp/docker
+    ports:
+      - '8080:80'
+    volumes:
+      - .:/var/www
+    networks:
+      - leafphp
+    depends_on:
+      - database
+  database:
+    image: mysql:9.3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: leafphp
+      MYSQL_USER: leafphp
+      MYSQL_PASSWORD: leafphp
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    networks:
+      - leafphp
+    
+networks:
+  leafphp:
+    driver: bridge
+
+volumes:
+  leafphp:
